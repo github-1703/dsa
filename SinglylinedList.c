@@ -1,4 +1,4 @@
-// implemenation of a singly linked list operation using c
+// implemenation of a singly linked list operation using c...
 
 #include <stdio.h>
 #include <stdlib.h> //use for malloc function
@@ -6,13 +6,16 @@
 struct node
 {
   int data;
-  struct node *next; // it is a pointer to a node and nothing is nothing but struct itself
+  struct node *next; // it is a pointer to a node and nothing but struct itself
 };
 struct node *first = NULL, *last = NULL;
 
 void insert_at_begining(int element);
 void insertion_at_end(int element);
 void insert_at_pos(int index, int element);
+void delete_at_begining();
+void delete_at_end();
+void delete_at_pos(int index);
 void display()
 {
   struct node *temp;
@@ -40,6 +43,12 @@ int main()
   insertion_at_end(11);
   display();
   insert_at_pos(2, 500);
+  display();
+
+  // delete_at_end();
+  // display();
+
+  delete_at_pos(4);
   display();
 }
 
@@ -111,7 +120,95 @@ void insert_at_pos(int index, int element)
     {
       NewNode->next = temp->next;
       temp->next = NewNode;
-      printf("%d was inserted\n", NewNode->data);
+      printf("%d was inserted at position %d\n", NewNode->data, index);
     }
+  }
+}
+
+void delete_at_begining()
+{
+  struct node *temp;
+
+  if (first == NULL)
+  {
+    printf("the list is empty\n");
+  }
+  else if (first->next == NULL) // single element
+  {
+    temp = first;
+    first = last = NULL;
+    free(temp);
+    printf("delete the first node\n");
+  }
+  else
+  {
+    temp = first;
+    first = temp->next;
+    free(temp);
+
+    printf("deleted at begining \n");
+  }
+}
+
+void delete_at_end()
+{
+  struct node *temp;
+
+  if (first == NULL)
+  {
+    printf("the list is empty\n");
+  }
+  else if (first->next == NULL)
+  {
+    temp = first;
+    first = last = NULL;
+    free(temp);
+  }
+  else
+  {
+    temp = first;
+    while (temp->next != last)
+    {
+
+      temp = temp->next;
+    }
+    last = temp;
+    temp = temp->next;
+    free(temp);
+    printf("last item deleted \n");
+  }
+  last->next = NULL;
+}
+
+void delete_at_pos(int index)
+{
+  struct node* temp, *tempp;
+  if(first==NULL)
+  {
+    printf("the list is empty");
+  }
+  else if(first->next==NULL)
+  {
+    temp=first;
+    first= last = NULL;
+    free(temp);
+  }
+else if(index==1)
+{
+  delete_at_begining();
+}
+
+  else 
+  {
+    temp= first;
+    for(int i=1; i<(index-1);i++)
+    {
+      temp=temp->next;
+    }
+    tempp = temp;
+    temp=temp->next;
+    tempp->next=temp->next;
+    free(temp);
+    printf("Item deleted at index %d\n",index);
   }
 }
